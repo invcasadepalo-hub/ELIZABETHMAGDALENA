@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f2dfe0">
+  <title>Elizabeth Magdalena | Mis XV Años</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #fff9f5 0%, #f2dfe0 65%, #e8c9c3 100%);
+      font-family: Georgia, serif;
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+
+    .envelope-stage {
+      position: relative;
+      width: min(88vw, 430px);
+      aspect-ratio: 1013 / 1536;
+      z-index: 3;
+      transform-style: preserve-3d;
+      transition: transform 1.3s ease, opacity 1.2s ease;
+    }
+
+    .envelope-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 22px rgba(110,65,48,.22));
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .seal-button {
+      position: absolute;
+      width: 34%;
+      height: 17%;
+      left: 50%;
+      top: 49%;
+      transform: translate(-50%, -50%);
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      z-index: 5;
+      -webkit-tap-highlight-color: transparent;
+      animation: sealGlow 2s ease-in-out infinite;
+    }
+
+    .seal-button:focus-visible {
+      outline: 2px solid #a66b70;
+      outline-offset: 5px;
+    }
+
+    .seal-button:disabled { cursor: default; }
+
+    @keyframes sealGlow {
+      0%, 100% { filter: drop-shadow(0 0 2px rgba(255,235,190,.3)); }
+      50% { filter: drop-shadow(0 0 10px rgba(255,222,150,.9)); }
+    }
+
+    .inner-card {
+      position: absolute;
+      width: 78%;
+      height: 63%;
+      top: 18%;
+      left: 11%;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid #d5ad70;
+      border-radius: 5px;
+      background: linear-gradient(145deg, #fffaf6, #f5e2df, #fff9f2);
+      box-shadow: 0 0 25px rgba(177,129,76,.3);
+      opacity: 0;
+      transform: translateY(70px) scale(.88);
+      transition: opacity 1s ease, transform 1.5s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .inner-card .crown {
+      color: #b58a4d;
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .inner-card h1 {
+      color: #a87865;
+      font-family: Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(20px, 5vw, 28px);
+      letter-spacing: 2px;
+    }
+
+    .inner-card p {
+      color: #b18a68;
+      font-size: 12px;
+      letter-spacing: 3px;
+      margin-top: 12px;
+    }
+
+    .scene.opening .inner-card {
+      opacity: 1;
+      transform: translateY(-15%) scale(1);
+    }
+
+    .scene.opening .envelope-stage {
+      transform: translateY(35%) rotateX(-17deg) scale(.82);
+      opacity: 0;
+    }
+
+    .scene.opening .seal-button {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sparkle-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .spark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background: #f5d38b;
+      opacity: 0;
+      box-shadow: 0 0 6px #fff4d4, 0 0 14px #e7b95d, 0 0 24px rgba(255,220,145,.8);
+    }
+
+    .spark::after {
+      content: "✦";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      color: #fff6dc;
+      font-size: calc(var(--size) * 2);
+      transform: translate(-50%, -50%);
+    }
+
+    .scene.opening .spark {
+      animation: goldenBurst 2.5s ease-out forwards;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes goldenBurst {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+      15% { opacity: 1; }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.5);
+      }
+    }
+
+    .gold-flash {
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(circle, rgba(255,249,222,.95), rgba(241,204,139,.45) 30%, transparent 70%);
+    }
+
+    .scene.opening .gold-flash {
+      animation: flash 1.1s ease-out forwards;
+      animation-delay: 1.8s;
+    }
+
+    @keyframes flash {
+      0% { opacity: 0; }
+      35% { opacity: .9; }
+      100% { opacity: 0; }
+    }
+
+    .loading-text {
+      position: absolute;
+      bottom: 8%;
+      z-index: 8;
+      color: #a98063;
+      font-size: 11px;
+      letter-spacing: 3px;
+      opacity: 0;
+      transition: opacity .5s;
+      text-align: center;
+      padding: 0 15px;
+    }
+
+    .scene.opening .loading-text { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .seal-button { animation: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="scene" id="scene">
+    <section class="inner-card" aria-hidden="true">
+      <div class="crown">♕</div>
+      <h1>Elizabeth Magdalena</h1>
+      <p>MIS XV AÑOS</p>
+    </section>
+
+    <div class="envelope-stage">
+      <img
+        class="envelope-image"
+        src="sobre-em.png"
+        alt="Sobre de invitación Elizabeth Magdalena"
+        fetchpriority="high"
+      >
+      <button
+        class="seal-button"
+        id="sealButton"
+        type="button"
+        aria-label="Abrir invitación"
+      ></button>
+    </div>
+
+    <div class="sparkle-layer" id="sparkles" aria-hidden="true"></div>
+    <div class="gold-flash" aria-hidden="true"></div>
+    <p class="loading-text" aria-live="polite">UNA NOCHE MÁGICA TE ESPERA</p>
+  </main>
+
+  <script>
+    (() => {
+      const scene = document.getElementById("scene");
+      const button = document.getElementById("sealButton");
+      const sparkleLayer = document.getElementById("sparkles");
+      const invitationURL = "https://sites.google.com/view/elizabeth-magdalena/home";
+      let opened = false;
+
+      // Crear destellos dorados
+      for (let i = 0; i < 32; i++) {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+
+        const angle = (Math.PI * 2 * i) / 32;
+        const distance = 100 + Math.random() * 220;
+
+        spark.style.setProperty("--x", Math.cos(angle) * distance + "px");
+        spark.style.setProperty("--y", Math.sin(angle) * distance + "px");
+        spark.style.setProperty("--size", (3 + Math.random() * 6) + "px");
+        spark.style.setProperty("--delay", (Math.random() * 0.5) + "s");
+
+        sparkleLayer.appendChild(spark);
+      }
+
+      button.addEventListener("click", () => {
+        if (opened) return;
+
+        opened = true;
+        button.disabled = true;
+        scene.classList.add("opening");
+
+        // Después de la animación, abrir la invitación principal
+        window.setTimeout(() => {
+          window.location.href = invitationURL;
+        }, 3600);
+      });
+    })();
+  </script>
+</body>
+</html>
